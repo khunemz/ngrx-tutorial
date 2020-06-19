@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 // Imports for loading & configuring the in-memory web api
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import {StoreModule } from '@ngrx/store'
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ProductData } from './products/product-data';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -25,7 +26,10 @@ import { UserModule } from './user/user.module';
     HttpClientInMemoryWebApiModule.forRoot(ProductData),
     UserModule,
     AppRoutingModule , 
-    StoreModule.forRoot({})
+    StoreModule.forRoot({}) ,
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+    }),
   ],
   declarations: [
     AppComponent,
