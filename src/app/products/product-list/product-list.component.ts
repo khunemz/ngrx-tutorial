@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Store } from '@ngrx/store'
+import { Store, select } from '@ngrx/store'
 import { Subscription } from 'rxjs';
 
 import { Product } from '../product';
@@ -33,6 +33,15 @@ export class ProductListComponent implements OnInit, OnDestroy {
       next: (products: Product[]) => this.products = products,
       error: (err: any) => this.errorMessage = err.error
     });
+
+    // todo : Unsubscribe from store 
+    this.store.pipe(select('product')).subscribe(
+      products => {
+        if(products) {
+          this.displayCode = products.showProductCode
+        }
+      }
+    )
   }
 
   ngOnDestroy(): void {
@@ -41,6 +50,8 @@ export class ProductListComponent implements OnInit, OnDestroy {
 
   checkChanged(value: boolean): void {
     // this.displayCode = value;
+
+    // ngrx : dispatch
     this.store.dispatch({
       type: 'TOGGLE_PRODUCT_CODE' , 
       payload: value 
